@@ -30,8 +30,10 @@ function! vimtex#options#init() abort " {{{1
   call s:init_option('vimtex_complete_smart_case', &smartcase)
   call s:init_option('vimtex_complete_bib', {
         \ 'simple': 0,
+        \ 'match_str_fmt': '@key [@type] @author_all (@year), "@title"',
         \ 'menu_fmt': '[@type] @author_short (@year), "@title"',
         \ 'abbr_fmt': '',
+        \ 'auth_len': 20,
         \ 'custom_patterns': [],
         \})
   call s:init_option('vimtex_complete_ref', {
@@ -59,9 +61,12 @@ function! vimtex#options#init() abort " {{{1
 
   if &diff
     let g:vimtex_fold_enabled = 0
+    let g:vimtex_fold_bib_enabled = 0
   else
     call s:init_option('vimtex_fold_enabled', 0)
+    call s:init_option('vimtex_fold_bib_enabled', g:vimtex_fold_enabled)
   endif
+  call s:init_option('vimtex_fold_bib_max_key_width', 0)
   call s:init_option('vimtex_fold_manual', 0)
   call s:init_option('vimtex_fold_levelmarker', '*')
   call s:init_option('vimtex_fold_types', {})
@@ -292,6 +297,8 @@ function! vimtex#options#init() abort " {{{1
         \   'csharp' : 'cs',
         \ },
         \ 'ignored' : {
+        \   'sh' : ['shSpecial'],
+        \   'bash' : ['shSpecial'],
         \   'cs' : [
         \     'csBraces',
         \   ],
@@ -316,6 +323,7 @@ function! vimtex#options#init() abort " {{{1
   call s:init_option('vimtex_syntax_packages', {
         \ 'amsmath': {'load': 2},
         \ 'babel': {'conceal': g:vimtex_syntax_conceal_default},
+        \ 'hyperref': {'conceal': g:vimtex_syntax_conceal_default},
         \})
 
   call s:init_option('vimtex_texcount_custom_arg', '')
